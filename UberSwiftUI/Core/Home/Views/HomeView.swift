@@ -8,8 +8,8 @@
 import SwiftUI
 
 struct HomeView: View {
-    //    @State private var showLocationSearchView = false
     @State private var mapState = MapViewState.noInput
+    @EnvironmentObject var locationViewModel: LocationSearchViewModel
     
     var body: some View {
         ZStack(alignment: .bottom) {
@@ -19,7 +19,7 @@ struct HomeView: View {
                 
                 VStack(spacing: 0) {
                     MapViewActionButton(mapState: $mapState)
-                        .background(mapState == .searchngForLocation ? .white : .white.opacity(0.0))
+                        .background(mapState == .searchngForLocation ? Color.theme.backgroundColor : Color.theme.backgroundColor.opacity(0.0))
                     
                     if mapState == .searchngForLocation {
                         LocationSearchView(mapState: $mapState)
@@ -34,12 +34,17 @@ struct HomeView: View {
                 }
             }
             
-            if mapState == .locationSelected {
+            if mapState == .locationSelected || mapState == .polylineAdded {
                 RideRequestView()
                     .transition(.move(edge: .bottom))
             }
         }
         .edgesIgnoringSafeArea(.bottom)
+        .onReceive(LocationManager.shared.$userlocation) { location in
+            if let location = location {
+                locationViewModel.userLocation = location
+            }
+        }
     }
 }
 

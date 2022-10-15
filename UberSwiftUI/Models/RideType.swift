@@ -29,4 +29,22 @@ case uberTesla
         case .uberTesla: return "uber-tesla"
         }
     }
+    
+    var baseFare: Double {
+        switch self {
+        case .uberX: return 5
+        case .uberBlack: return 10
+        case .uberTesla: return 15
+        }
+    }
+    
+    func computePrice(for distanceInMeters: Double) -> Double {
+        let distanceInKm = distanceInMeters / 1000
+        
+        switch self {
+        case .uberX: return distanceInKm * 1.5 + baseFare
+        case .uberBlack: return distanceInKm * 1.75 + baseFare
+        case .uberTesla: return distanceInKm * 2.0 + baseFare
+        }
+    }
 }

@@ -11,4 +11,5 @@ enum MapViewState {
     case noInput
     case searchngForLocation
     case locationSelected
+    case polylineAdded
 }
